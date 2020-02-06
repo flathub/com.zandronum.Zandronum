@@ -1,7 +1,7 @@
 app-id: com.zandronum.Zandronum
 runtime: org.kde.Platform
 sdk: org.kde.Sdk
-runtime-version: "5.13"
+runtime-version: "5.14"
 command: doomseeker
 
 finish-args:
@@ -27,28 +27,11 @@ cleanup:
 
 modules:
 
-- shared-modules/glu/glu-9.0.0.json
+- shared-modules/glu/glu-9.json
 - shared-modules/glew/glew.json
 
 # Warning, must be in this order... SDL last
 - shared-modules/SDL/SDL-1.2.15.json
-
-- name: ncurses
-  no-autogen: true
-  config-opts:
-  - --prefix=/app
-  make-install-args:
-  - install.libs
-  cleanup:
-  - /bin
-  - /include
-  - /share/man
-  - "/lib/*.a"
-  - "/lib/*.la"
-  sources:
-  - type: archive
-    url: http://ftp.gnu.org/gnu/ncurses/ncurses-6.1.tar.gz
-    sha256: aa057eeeb4a14d470101eff4597d5833dcef5965331be3528c08d99cebaa0d17
 
 - name: fluidsynth
   buildsystem: cmake-ninja
@@ -63,13 +46,12 @@ modules:
     url: https://github.com/FluidSynth/fluidsynth/archive/v1.1.11.tar.gz
     sha256: da8878ff374d12392eecf87e96bad8711b8e76a154c25a571dd8614d1af80de8
 
-
 - name: zandronum
   buildsystem: cmake-ninja
   # Make install is not supported.
   # Then again, everything is statically linked 
   no-make-install: true
-  build-commands:  
+  build-commands:
   - install -D zandronum /app/bin/zandronum
   - install -D skulltag_actors.pk3 /app/share/games/skulltag_actors.pk3
   - install -D zandronum.pk3 /app/share/games/doom/zandronum.pk3
@@ -78,16 +60,16 @@ modules:
   config-opts:
   - -DOpenGL_GL_PREFERENCE=GLVND
   - -DCMAKE_BUILD_TYPE=RelWithDebInfo
-  - -DRELEASE_WITH_DEBUG_FILE=ON  
+  - -DRELEASE_WITH_DEBUG_FILE=ON
   - -DCMAKE_INSTALL_PREFIX=/app
   - -DCMAKE_LIBRARY_PATH=/app/lib
   - -DCMAKE_INCLUDE_PATH=/app/app
   - -DFMOD_LIBRARY=./fmodapi42416linux64/api/lib/libfmodex64-4.24.16.so
-  - -DFMOD_INCLUDE_DIR=./fmodapi42416linux64/api/inc  
+  - -DFMOD_INCLUDE_DIR=./fmodapi42416linux64/api/inc
   # We only compile the client
-  - -DSERVERONLY=OFF  
+  - -DSERVERONLY=OFF
   # No UI included. Doomseeker does that part
-  - -DNO_GTK=ON   
+  - -DNO_GTK=ON
   sources:
   - type: archive
     url: https://bitbucket.org/Torr_Samaho/zandronum/get/ZA_3.0.tar.gz
@@ -117,7 +99,7 @@ modules:
   - type: shell
     commands:
     - install -Dm 644 gzdoom.sf2 /app/share/sounds/sf2/gzdoom.sf2
-    
+
 - name: doomseeker
   buildsystem: cmake-ninja
   config-opts:
@@ -126,16 +108,16 @@ modules:
   - -DCMAKE_INSTALL_PREFIX=/app
   sources:
   - type: archive
-    url: https://bitbucket.org/Doomseeker/doomseeker/get/1.3.tar.bz2
-    sha256: 13b4dda6200d346aab07f4be861972082a117b024c8192047a372baf6b971e6c
+    url: https://bitbucket.org/Doomseeker/doomseeker/get/1.3.1.tar.bz2
+    sha256: b55a96559dbd32c343e65634ac2b9de6e0128928e1eaeac3bb3dd19c88b8f2df
   - type: shell
     commands:
     # Current upstream system makes use of Mercurial. There are plans
-    # to migrate to Git, but at the time this works easiest.
+    # to migrate to Git, but at the time of writing, this works best.
     - sed -i 's/HG_REVISION_HASH_STRING/"Flatpak Edition"/g' ./src/core/version.cpp
     - sed -i 's/HG_REVISION_NUMBER/'$(date +%s)'/g' ./src/core/version.cpp
     - sed -i 's/HG_TIME/"'$(date --iso-8601=seconds)'"/g' ./src/core/version.cpp
-    
+
     # Skip irrelevant plugins
     - sed -i 's/add_opt_subdirectory(chocolate-doom)//g' ./src/plugins/CMakeLists.txt
     - sed -i 's/add_opt_subdirectory(odamex)//g' ./src/plugins/CMakeLists.txt

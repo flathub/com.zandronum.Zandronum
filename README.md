@@ -6,8 +6,6 @@
 
 ## Run with custom wads
 
-## Run with custom wads
-
 ### UI
 With Doomseeker, you can create a custom game. Then, under mode you can sellect 'Play offline' to start a singleplayer game.
 

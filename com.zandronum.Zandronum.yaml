@@ -72,8 +72,8 @@ modules:
   - -DNO_GTK=ON
   sources:
   - type: archive
-    url: https://bitbucket.org/Torr_Samaho/zandronum/get/ZA_3.0.tar.gz
-    sha256: e1c12904f2598ba83de8e5cc61269ffad897834a6da714ca2ea841815913c545
+    url: https://osdn.dl.osdn.net/scmarchive/g/zandronum/hg/zandronum-stable/10/af17/zandronum-stable-10af17.tar.gz
+    sha256: 869b175366faaf8519008db6734cd584e09e6f2710dcef18bba2ed61b993a489
   - type: file
     url: https://www.sqlite.org/2017/sqlite-autoconf-3180000.tar.gz
     sha1: 74559194e1dd9b9d577cac001c0e9d370856671b
@@ -117,8 +117,8 @@ modules:
   - -DNO_GTK=ON
   sources:
   - type: archive
-    url: https://bitbucket.org/Torr_Samaho/zandronum/get/ZA_3.0.tar.gz
-    sha256: e1c12904f2598ba83de8e5cc61269ffad897834a6da714ca2ea841815913c545
+    url: https://osdn.dl.osdn.net/scmarchive/g/zandronum/hg/zandronum-stable/10/af17/zandronum-stable-10af17.tar.gz
+    sha256: 869b175366faaf8519008db6734cd584e09e6f2710dcef18bba2ed61b993a489
   - type: file
     url: https://www.sqlite.org/2017/sqlite-autoconf-3180000.tar.gz
     sha1: 74559194e1dd9b9d577cac001c0e9d370856671b

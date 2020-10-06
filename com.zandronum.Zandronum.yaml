@@ -1,7 +1,7 @@
 app-id: com.zandronum.Zandronum
 runtime: org.kde.Platform
 sdk: org.kde.Sdk
-runtime-version: "5.14"
+runtime-version: "5.15"
 command: doomseeker
 
 finish-args:
@@ -45,6 +45,13 @@ modules:
   - type: archive
     url: https://github.com/FluidSynth/fluidsynth/archive/v1.1.11.tar.gz
     sha256: da8878ff374d12392eecf87e96bad8711b8e76a154c25a571dd8614d1af80de8
+    
+- name: gme
+  buildsystem: cmake-ninja
+  sources:
+  - type: archive
+    url: https://bitbucket.org/mpyne/game-music-emu/downloads/game-music-emu-0.6.3.tar.gz
+    sha256: 626e8a104e0dadd10ef6519a67aca880c7b40f81471659f1935b61754e12fc7b
 
 - name: zandronum
   buildsystem: cmake-ninja
@@ -71,9 +78,11 @@ modules:
   # No UI included. Doomseeker does that part
   - -DNO_GTK=ON
   sources:
+    # Main source-file, directly from the mecrurial branch
   - type: archive
     url: https://osdn.dl.osdn.net/scmarchive/g/zandronum/hg/zandronum-stable/10/af17/zandronum-stable-10af17.tar.gz
     sha256: 869b175366faaf8519008db6734cd584e09e6f2710dcef18bba2ed61b993a489
+    # Add special version of SQlite that is required within Zandronum
   - type: file
     url: https://www.sqlite.org/2017/sqlite-autoconf-3180000.tar.gz
     sha1: 74559194e1dd9b9d577cac001c0e9d370856671b
@@ -83,10 +92,16 @@ modules:
     url: https://www.sqlite.org/2017/sqlite-autoconf-3180000.tar.gz
     sha1: 74559194e1dd9b9d577cac001c0e9d370856671b
     dest: ./sqlite
+    # Add custom audio library
   - type: archive
     url: https://zandronum.com/essentials/fmod/fmodapi42416linux64.tar.gz
     sha256: de545ab90c4f137a8e1734ed1891c7e28fa257d9cb7e6c953bedfd0fd9a77c42
     dest: ./fmodapi42416linux64
+    # Add library because the bundled version is not compatible with GCC 10 =
+  - type: archive
+    dest: ./game-music-emu
+    url: https://bitbucket.org/mpyne/game-music-emu/downloads/game-music-emu-0.6.3.tar.gz
+    sha256: 626e8a104e0dadd10ef6519a67aca880c7b40f81471659f1935b61754e12fc7b
     # Current upstream system makes use of Mercurial. To have the right version number in
     # the build, we add our own file containing version number info.
   - type: file
@@ -116,9 +131,11 @@ modules:
   # No UI included. Doomseeker does that part
   - -DNO_GTK=ON
   sources:
+    # Main source-file, directly from the mecrurial branch
   - type: archive
     url: https://osdn.dl.osdn.net/scmarchive/g/zandronum/hg/zandronum-stable/10/af17/zandronum-stable-10af17.tar.gz
     sha256: 869b175366faaf8519008db6734cd584e09e6f2710dcef18bba2ed61b993a489
+    # Add special version of SQlite that is required within Zandronum
   - type: file
     url: https://www.sqlite.org/2017/sqlite-autoconf-3180000.tar.gz
     sha1: 74559194e1dd9b9d577cac001c0e9d370856671b
@@ -128,10 +145,16 @@ modules:
     url: https://www.sqlite.org/2017/sqlite-autoconf-3180000.tar.gz
     sha1: 74559194e1dd9b9d577cac001c0e9d370856671b
     dest: ./sqlite
+    # Add custom audio library
   - type: archive
     url: https://zandronum.com/essentials/fmod/fmodapi42416linux64.tar.gz
     sha256: de545ab90c4f137a8e1734ed1891c7e28fa257d9cb7e6c953bedfd0fd9a77c42
     dest: ./fmodapi42416linux64
+    # Add library because the bundled version is not compatible with GCC 10 =
+  - type: archive
+    dest: ./game-music-emu
+    url: https://bitbucket.org/mpyne/game-music-emu/downloads/game-music-emu-0.6.3.tar.gz
+    sha256: 626e8a104e0dadd10ef6519a67aca880c7b40f81471659f1935b61754e12fc7b
     # Current upstream system makes use of Mercurial. To have the right version number in
     # the build, we add our own file containing version number info.
   - type: file

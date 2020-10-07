@@ -56,7 +56,7 @@ modules:
 - name: zandronum
   buildsystem: cmake-ninja
   # Make install is not supported.
-  # Then again, everything is statically linked 
+  # Then again, everything is statically linked
   no-make-install: true
   build-commands:
   - install -D zandronum /app/bin/zandronum
@@ -185,6 +185,17 @@ modules:
     - sed -i 's/add_opt_subdirectory(srb2)//g' ./src/plugins/CMakeLists.txt
     - sed -i 's/add_opt_subdirectory(turok2ex)//g' ./src/plugins/CMakeLists.txt
 
+- name: gdtoa
+  buildsystem: autotools
+  no-make-install: true
+  build-commands:
+  - install -D .libs/libgdtoa-1.0.so /app/lib/libgdtoa-1.0.so
+  - (cd /app/lib/ && ln -s libgdtoa-1.0.so libgdtoa.so)
+  sources:
+  - type: git
+    url: https://github.com/jwiegley/gdtoa.git
+    branch: master
+
 - name: launcher
   buildsystem: simple
   sources:
@@ -199,7 +210,7 @@ modules:
   - type: file
     path: com.zandronum.Zandronum.128.png
   - type: file
-    url: https://github.com/coelckers/gzdoom/raw/g4.3.3/soundfont/gzdoom.sf2
+    url: https://github.com/coelckers/gzdoom/raw/g4.4.1/soundfont/gzdoom.sf2
     sha256: fca3e514b635a21789d4224e84865d2954a2a914d46b64aa8219ddb565c44869
   build-commands:
   - install -Dm 644 gzdoom.sf2 /app/share/sounds/sf2/gzdoom.sf2

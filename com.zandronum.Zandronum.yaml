@@ -1,7 +1,7 @@
 app-id: com.zandronum.Zandronum
 runtime: org.kde.Platform
 sdk: org.kde.Sdk
-runtime-version: "5.14"
+runtime-version: "5.15"
 command: doomseeker
 
 finish-args:
@@ -93,6 +93,9 @@ modules:
     path: gitinfo.h.patch
     dest: ./src
     dest-filename: gitinfo.h
+  - type: shell
+    commands:
+    - sed -i '90s/.*/if (true)/' ./game-music-emu/CMakeLists.txt
 
 # For troubling historic reasons, the server and client were long developed as
 # separate entities. As such, their build system is not fully alligned yet.
@@ -138,6 +141,9 @@ modules:
     path: gitinfo.h.patch
     dest: ./src
     dest-filename: gitinfo.h
+  - type: shell
+    commands:
+    - sed -i '90s/.*/if (true)/' ./game-music-emu/CMakeLists.txt
 
 - name: doomseeker
   buildsystem: cmake-ninja
@@ -176,7 +182,7 @@ modules:
   - type: file
     path: com.zandronum.Zandronum.128.png
   - type: file
-    url: https://github.com/coelckers/gzdoom/raw/g4.3.3/soundfont/gzdoom.sf2
+    url: https://github.com/coelckers/gzdoom/raw/g4.5.0/soundfont/gzdoom.sf2
     sha256: fca3e514b635a21789d4224e84865d2954a2a914d46b64aa8219ddb565c44869
   build-commands:
   - install -Dm 644 gzdoom.sf2 /app/share/sounds/sf2/gzdoom.sf2

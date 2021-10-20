@@ -32,19 +32,6 @@ modules:
   # Warning, must be in this order... SDL last
   - shared-modules/SDL/SDL-1.2.15.json
 
-  - name: fluidsynth
-    buildsystem: cmake-ninja
-    config-opts:
-      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
-      - -DLIB_SUFFIX=
-      # https://lists.nongnu.org/archive/html/fluid-dev/2010-10/msg00057.html
-      - -DCMAKE_EXE_LINKER_FLAGS=-lncurses
-      - -DCMAKE_SHARED_LINKER_FLAGS=-lncurses
-    sources:
-      - type: archive
-        url: https://github.com/FluidSynth/fluidsynth/archive/v1.1.11.tar.gz
-        sha256: da8878ff374d12392eecf87e96bad8711b8e76a154c25a571dd8614d1af80de8
-
   - name: gme
     buildsystem: cmake-ninja
     sources:
@@ -197,6 +184,8 @@ modules:
       - type: script
         dest-filename: doomseeker.sh
         commands:
+          # Insert clean zandronum config if none defined
+          - ls ~/.config/zandronum/zandronum.ini || /app/bin/zandronum -nosound -norun
           # Neccessery evil to ensure that Zandronum doesn't crash because of the outdated
           # FMOD library: https://zandronum.com/forum/viewtopic.php?t=9885
           - sed -i 's|\(snd_output=\)\(.*\)|\1SDL|g' ~/.config/zandronum/zandronum.ini

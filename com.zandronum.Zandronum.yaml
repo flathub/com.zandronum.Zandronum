@@ -45,6 +45,13 @@ modules:
   - type: archive
     url: https://github.com/FluidSynth/fluidsynth/archive/v1.1.11.tar.gz
     sha256: da8878ff374d12392eecf87e96bad8711b8e76a154c25a571dd8614d1af80de8
+    
+- name: gme
+  buildsystem: cmake-ninja
+  sources:
+  - type: archive
+    url: https://bitbucket.org/mpyne/game-music-emu/downloads/game-music-emu-0.6.3.tar.gz
+    sha256: 626e8a104e0dadd10ef6519a67aca880c7b40f81471659f1935b61754e12fc7b
 
 - name: zandronum
   buildsystem: cmake-ninja
@@ -66,6 +73,11 @@ modules:
   - -DCMAKE_INCLUDE_PATH=/app/app
   - -DFMOD_LIBRARY=./fmodapi42416linux64/api/lib/libfmodex64-4.24.16.so
   - -DFMOD_INCLUDE_DIR=./fmodapi42416linux64/api/inc
+  # Bundled version of GME has compile-errors
+  - -DFORCE_INTERNAL_GME=OFF
+  - -DFORCE_INTERNAL_ZLIB=OFF
+  - -DFORCE_INTERNAL_JPEG=OFF
+  - -DFORCE_INTERNAL_BZIP2=OFF
   # We only compile the client
   - -DSERVERONLY=OFF
   # No UI included. Doomseeker does that part
@@ -93,9 +105,6 @@ modules:
     path: gitinfo.h.patch
     dest: ./src
     dest-filename: gitinfo.h
-  - type: shell
-    commands:
-    - sed -i '90s/.*/if (true)/' ./game-music-emu/CMakeLists.txt
 
 # For troubling historic reasons, the server and client were long developed as
 # separate entities. As such, their build system is not fully alligned yet.
@@ -114,6 +123,11 @@ modules:
   - -DCMAKE_INCLUDE_PATH=/app/app
   - -DFMOD_LIBRARY=./fmodapi42416linux64/api/lib/libfmodex64-4.24.16.so
   - -DFMOD_INCLUDE_DIR=./fmodapi42416linux64/api/inc
+  # Bundled version of GME has compile-errors
+  - -DFORCE_INTERNAL_GME=OFF
+  - -DFORCE_INTERNAL_ZLIB=OFF
+  - -DFORCE_INTERNAL_JPEG=OFF
+  - -DFORCE_INTERNAL_BZIP2=OFF
   # We only compile the server
   - -DSERVERONLY=ON
   # No UI included. Doomseeker does that part
@@ -141,9 +155,7 @@ modules:
     path: gitinfo.h.patch
     dest: ./src
     dest-filename: gitinfo.h
-  - type: shell
-    commands:
-    - sed -i '90s/.*/if (true)/' ./game-music-emu/CMakeLists.txt
+
 
 - name: doomseeker
   buildsystem: cmake-ninja

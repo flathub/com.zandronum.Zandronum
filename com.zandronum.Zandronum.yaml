@@ -5,200 +5,201 @@ runtime-version: "5.15-21.08"
 command: doomseeker.sh
 
 finish-args:
-- --device=dri
-- --socket=wayland
-- --socket=x11
-- --share=ipc
-- --share=network
-- --socket=pulseaudio
+  - --device=dri
+  - --socket=wayland
+  - --socket=x11
+  - --share=ipc
+  - --share=network
+  - --socket=pulseaudio
 
-# Based on GZDoom
-# Now for something confusing: Doomseeker honours XDG standards
-# But Zandronum doesn't. Both persist for consistency.
-- --env=DOOMWADDIR=/app/share/games/doom
-- --persist=.config/zandronum
-- --persist=.config/doomseeker
+  # Based on GZDoom
+  # Now for something confusing: Doomseeker honours XDG standards
+  # But Zandronum doesn't. Both persist for consistency.
+  - --env=DOOMWADDIR=/app/share/games/doom
+  - --persist=.config/zandronum
+  - --persist=.config/doomseeker
 
 cleanup:
-- /app/include
-- /app/lib/*.a
-- /app/lib/*.la
-- /app/lib/pkgconfig
+  - /app/include
+  - /app/lib/*.a
+  - /app/lib/*.la
+  - /app/lib/pkgconfig
 
 modules:
+  - shared-modules/glu/glu-9.json
+  - shared-modules/glew/glew.json
 
-- shared-modules/glu/glu-9.json
-- shared-modules/glew/glew.json
+  # Warning, must be in this order... SDL last
+  - shared-modules/SDL/SDL-1.2.15.json
 
-# Warning, must be in this order... SDL last
-- shared-modules/SDL/SDL-1.2.15.json
+  - name: fluidsynth
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
+      - -DLIB_SUFFIX=
+      # https://lists.nongnu.org/archive/html/fluid-dev/2010-10/msg00057.html
+      - -DCMAKE_EXE_LINKER_FLAGS=-lncurses
+      - -DCMAKE_SHARED_LINKER_FLAGS=-lncurses
+    sources:
+      - type: archive
+        url: https://github.com/FluidSynth/fluidsynth/archive/v1.1.11.tar.gz
+        sha256: da8878ff374d12392eecf87e96bad8711b8e76a154c25a571dd8614d1af80de8
 
-- name: fluidsynth
-  buildsystem: cmake-ninja
-  config-opts:
-  - -DCMAKE_BUILD_TYPE=RelWithDebInfo
-  - -DLIB_SUFFIX=
-  # https://lists.nongnu.org/archive/html/fluid-dev/2010-10/msg00057.html
-  - -DCMAKE_EXE_LINKER_FLAGS=-lncurses
-  - -DCMAKE_SHARED_LINKER_FLAGS=-lncurses
-  sources:
-  - type: archive
-    url: https://github.com/FluidSynth/fluidsynth/archive/v1.1.11.tar.gz
-    sha256: da8878ff374d12392eecf87e96bad8711b8e76a154c25a571dd8614d1af80de8
-    
-- name: gme
-  buildsystem: cmake-ninja
-  sources:
-  - type: archive
-    url: https://bitbucket.org/mpyne/game-music-emu/downloads/game-music-emu-0.6.3.tar.gz
-    sha256: 626e8a104e0dadd10ef6519a67aca880c7b40f81471659f1935b61754e12fc7b
+  - name: gme
+    buildsystem: cmake-ninja
+    sources:
+      - type: archive
+        url: https://bitbucket.org/mpyne/game-music-emu/downloads/game-music-emu-0.6.3.tar.gz
+        sha256: 626e8a104e0dadd10ef6519a67aca880c7b40f81471659f1935b61754e12fc7b
 
-- name: zandronum
-  buildsystem: cmake-ninja
-  # Make install is not supported.
-  # Then again, everything is statically linked
-  no-make-install: true
-  build-commands:
-  - install -D zandronum /app/bin/zandronum
-  - install -D skulltag_actors.pk3 /app/share/games/skulltag_actors.pk3
-  - install -D zandronum.pk3 /app/share/games/doom/zandronum.pk3
-  - install -D liboutput_sdl.so /app/lib/liboutput_sdl.so
-  - install -D /run/build/zandronum/fmodapi42416linux64/api/lib/libfmodex64-4.24.16.so /app/lib/libfmodex64-4.24.16.so
-  config-opts:
-  - -DOpenGL_GL_PREFERENCE=GLVND
-  - -DCMAKE_BUILD_TYPE=RelWithDebInfo
-  - -DRELEASE_WITH_DEBUG_FILE=ON
-  - -DCMAKE_INSTALL_PREFIX=/app
-  - -DCMAKE_LIBRARY_PATH=/app/lib
-  - -DCMAKE_INCLUDE_PATH=/app/app
-  - -DFMOD_LIBRARY=./fmodapi42416linux64/api/lib/libfmodex64-4.24.16.so
-  - -DFMOD_INCLUDE_DIR=./fmodapi42416linux64/api/inc
-  # Bundled version of GME has compile-errors
-  - -DFORCE_INTERNAL_GME=OFF
-  - -DFORCE_INTERNAL_ZLIB=OFF
-  - -DFORCE_INTERNAL_JPEG=OFF
-  - -DFORCE_INTERNAL_BZIP2=OFF
-  # We only compile the client
-  - -DSERVERONLY=OFF
-  # No UI included. Doomseeker does that part
-  - -DNO_GTK=ON
-  sources:
-  - type: archive
-    url: https://osdn.dl.osdn.net/scmarchive/g/zandronum/hg/zandronum-stable/10/af17/zandronum-stable-10af17.tar.gz
-    sha256: 869b175366faaf8519008db6734cd584e09e6f2710dcef18bba2ed61b993a489
-  - type: archive
-    url: https://zandronum.com/essentials/fmod/fmodapi42416linux64.tar.gz
-    sha256: de545ab90c4f137a8e1734ed1891c7e28fa257d9cb7e6c953bedfd0fd9a77c42
-    dest: ./fmodapi42416linux64
-    # Current upstream system makes use of Mercurial. To have the right version number in
-    # the build, we add our own file containing version number info.
-  - type: file
-    path: gitinfo.h.patch
-    dest: ./src
-    dest-filename: gitinfo.h
-    # Don't use the bundled sqlite
-  - type: shell
-    commands:
-      - sed -i 's/add_subdirectory( sqlite )//g' ./CMakeLists.txt
+  - name: zandronum
+    buildsystem: cmake-ninja
+    # Make install is not supported.
+    # Then again, everything is statically linked
+    no-make-install: true
+    build-commands:
+      - install -D zandronum /app/bin/zandronum
+      - install -D skulltag_actors.pk3 /app/share/games/skulltag_actors.pk3
+      - install -D zandronum.pk3 /app/share/games/doom/zandronum.pk3
+      - install -D liboutput_sdl.so /app/lib/liboutput_sdl.so
+      - install -D /run/build/zandronum/fmodapi42416linux64/api/lib/libfmodex64-4.24.16.so /app/lib/libfmodex64-4.24.16.so
+    config-opts:
+      - -DOpenGL_GL_PREFERENCE=GLVND
+      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
+      - -DRELEASE_WITH_DEBUG_FILE=ON
+      - -DCMAKE_INSTALL_PREFIX=/app
+      - -DCMAKE_LIBRARY_PATH=/app/lib
+      - -DCMAKE_INCLUDE_PATH=/app/app
+      - -DFMOD_LIBRARY=./fmodapi42416linux64/api/lib/libfmodex64-4.24.16.so
+      - -DFMOD_INCLUDE_DIR=./fmodapi42416linux64/api/inc
+      # Bundled version of GME has compile-errors
+      - -DFORCE_INTERNAL_GME=OFF
+      - -DFORCE_INTERNAL_ZLIB=OFF
+      - -DFORCE_INTERNAL_JPEG=OFF
+      - -DFORCE_INTERNAL_BZIP2=OFF
+      # We only compile the client
+      - -DSERVERONLY=OFF
+      # No UI included. Doomseeker does that part
+      - -DNO_GTK=ON
+    sources:
+      - type: archive
+        url: https://osdn.dl.osdn.net/scmarchive/g/zandronum/hg/zandronum-stable/10/af17/zandronum-stable-10af17.tar.gz
+        sha256: 869b175366faaf8519008db6734cd584e09e6f2710dcef18bba2ed61b993a489
+      - type: archive
+        url: https://zandronum.com/essentials/fmod/fmodapi42416linux64.tar.gz
+        sha256: de545ab90c4f137a8e1734ed1891c7e28fa257d9cb7e6c953bedfd0fd9a77c42
+        dest: ./fmodapi42416linux64
+        # Current upstream system makes use of Mercurial. To have the right version number in
+        # the build, we add our own file containing version number info.
+      - type: file
+        path: gitinfo.h.patch
+        dest: ./src
+        dest-filename: gitinfo.h
+        # Don't use the bundled sqlite
+      - type: shell
+        commands:
+          - sed -i 's/add_subdirectory( sqlite )//g' ./CMakeLists.txt
 
-# For troubling historic reasons, the server and client were long developed as
-# separate entities. As such, their build system is not fully alligned yet.
-# A future version of this script should consider adding this as an optional component
-- name: zandronum-server
-  buildsystem: cmake-ninja
-  no-make-install: true
-  build-commands:
-  - install -D zandronum-server /app/bin/zandronum-server
-  config-opts:
-  - -DOpenGL_GL_PREFERENCE=GLVND
-  - -DCMAKE_BUILD_TYPE=RelWithDebInfo
-  - -DRELEASE_WITH_DEBUG_FILE=ON
-  - -DCMAKE_INSTALL_PREFIX=/app
-  - -DCMAKE_LIBRARY_PATH=/app/lib
-  - -DCMAKE_INCLUDE_PATH=/app/app
-  - -DFMOD_LIBRARY=./fmodapi42416linux64/api/lib/libfmodex64-4.24.16.so
-  - -DFMOD_INCLUDE_DIR=./fmodapi42416linux64/api/inc
-  # Bundled version of GME has compile-errors
-  - -DFORCE_INTERNAL_GME=OFF
-  - -DFORCE_INTERNAL_ZLIB=OFF
-  - -DFORCE_INTERNAL_JPEG=OFF
-  - -DFORCE_INTERNAL_BZIP2=OFF
-  # We only compile the server
-  - -DSERVERONLY=ON
-  # No UI included. Doomseeker does that part
-  - -DNO_GTK=ON
-  sources:
-  - type: archive
-    url: https://osdn.dl.osdn.net/scmarchive/g/zandronum/hg/zandronum-stable/10/af17/zandronum-stable-10af17.tar.gz
-    sha256: 869b175366faaf8519008db6734cd584e09e6f2710dcef18bba2ed61b993a489
-  - type: archive
-    url: https://zandronum.com/essentials/fmod/fmodapi42416linux64.tar.gz
-    sha256: de545ab90c4f137a8e1734ed1891c7e28fa257d9cb7e6c953bedfd0fd9a77c42
-    dest: ./fmodapi42416linux64
-    # Current upstream system makes use of Mercurial. To have the right version number in
-    # the build, we add our own file containing version number info.
-  - type: file
-    path: gitinfo.h.patch
-    dest: ./src
-    dest-filename: gitinfo.h
-    # Don't use the bundled sqlite
-  - type: shell
-    commands:
-      - sed -i 's/add_subdirectory( sqlite )//g' ./CMakeLists.txt
+  # For troubling historic reasons, the server and client were long developed as
+  # separate entities. As such, their build system is not fully alligned yet.
+  # A future version of this script should consider adding this as an optional component.
+  # Upstream has also hardcoded GeoIP.dat which gives a warning when starting a server
+  - name: zandronum-server
+    buildsystem: cmake-ninja
+    no-make-install: true
+    build-commands:
+      - install -D zandronum-server /app/bin/zandronum-server
+    config-opts:
+      - -DOpenGL_GL_PREFERENCE=GLVND
+      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
+      - -DRELEASE_WITH_DEBUG_FILE=ON
+      - -DCMAKE_INSTALL_PREFIX=/app
+      - -DCMAKE_LIBRARY_PATH=/app/lib
+      - -DCMAKE_INCLUDE_PATH=/app/app
+      - -DFMOD_LIBRARY=./fmodapi42416linux64/api/lib/libfmodex64-4.24.16.so
+      - -DFMOD_INCLUDE_DIR=./fmodapi42416linux64/api/inc
+      # Bundled version of GME has compile-errors
+      - -DFORCE_INTERNAL_GME=OFF
+      - -DFORCE_INTERNAL_ZLIB=OFF
+      - -DFORCE_INTERNAL_JPEG=OFF
+      - -DFORCE_INTERNAL_BZIP2=OFF
+      # We only compile the server
+      - -DSERVERONLY=ON
+      # No UI included. Doomseeker does that part
+      - -DNO_GTK=ON
+    sources:
+      - type: archive
+        url: https://osdn.dl.osdn.net/scmarchive/g/zandronum/hg/zandronum-stable/10/af17/zandronum-stable-10af17.tar.gz
+        sha256: 869b175366faaf8519008db6734cd584e09e6f2710dcef18bba2ed61b993a489
+      - type: archive
+        url: https://zandronum.com/essentials/fmod/fmodapi42416linux64.tar.gz
+        sha256: de545ab90c4f137a8e1734ed1891c7e28fa257d9cb7e6c953bedfd0fd9a77c42
+        dest: ./fmodapi42416linux64
+        # Current upstream system makes use of Mercurial. To have the right version number in
+        # the build, we add our own file containing version number info.
+      - type: file
+        path: gitinfo.h.patch
+        dest: ./src
+        dest-filename: gitinfo.h
+        # Don't use the bundled sqlite
+      - type: shell
+        commands:
+          - sed -i 's/add_subdirectory( sqlite )//g' ./CMakeLists.txt
 
-- name: doomseeker
-  buildsystem: cmake-ninja
-  config-opts:
-  - -DCMAKE_SKIP_RPATH=true
-  - -DCMAKE_BUILD_TYPE=RelWithDebInfo
-  - -DCMAKE_INSTALL_PREFIX=/app
-  sources:
-  - type: archive
-    url: https://bitbucket.org/Doomseeker/doomseeker/get/1.3.2.tar.bz2
-    sha256: 2013ade29be63988023d8c04acb018979fd2aab454228b5a726482dd495027b6
-  - type: shell
-    commands:
-    # Current upstream system makes use of Mercurial. There are plans
-    # to migrate to Git, but at the time of writing, this works best.
-    - sed -i 's/HG_REVISION_HASH_STRING/"Flatpak Edition"/g' ./src/core/version.cpp
-    - sed -i 's/HG_REVISION_NUMBER/'$(date +%s)'/g' ./src/core/version.cpp
-    - sed -i 's/HG_TIME/"'$(date --iso-8601=seconds)'"/g' ./src/core/version.cpp
-    # Skip irrelevant plugins
-    - sed -i 's/add_opt_subdirectory(chocolate-doom)//g' ./src/plugins/CMakeLists.txt
-    - sed -i 's/add_opt_subdirectory(zandronumq)//g' ./src/plugins/CMakeLists.txt
-    - sed -i 's/add_opt_subdirectory(odamex)//g' ./src/plugins/CMakeLists.txt
-    - sed -i 's/add_opt_subdirectory(srb2)//g' ./src/plugins/CMakeLists.txt
-    - sed -i 's/add_opt_subdirectory(turok2ex)//g' ./src/plugins/CMakeLists.txt
+  - name: doomseeker
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_SKIP_RPATH=true
+      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
+      - -DCMAKE_INSTALL_PREFIX=/app
+    sources:
+      - type: archive
+        url: https://bitbucket.org/Doomseeker/doomseeker/get/1.3.2.tar.bz2
+        sha256: 2013ade29be63988023d8c04acb018979fd2aab454228b5a726482dd495027b6
+      - type: shell
+        commands:
+          # Package requires HG_ details for version numbers
+          # Used to be based on Mercurial so that explains the naming
+          - sed -i 's/HG_REVISION_HASH_STRING/"Flatpak Edition"/g' ./src/core/version.cpp
+          - sed -i 's/HG_REVISION_NUMBER/'$(date +%s)'/g' ./src/core/version.cpp
+          - sed -i 's/HG_TIME/"'$(date --iso-8601=seconds)'"/g' ./src/core/version.cpp
+          # Skip irrelevant plugins
+          - sed -i 's/add_opt_subdirectory(chocolate-doom)//g' ./src/plugins/CMakeLists.txt
+          - sed -i 's/add_opt_subdirectory(zandronumq)//g' ./src/plugins/CMakeLists.txt
+          - sed -i 's/add_opt_subdirectory(odamex)//g' ./src/plugins/CMakeLists.txt
+          - sed -i 's/add_opt_subdirectory(srb2)//g' ./src/plugins/CMakeLists.txt
+          - sed -i 's/add_opt_subdirectory(turok2ex)//g' ./src/plugins/CMakeLists.txt
 
-- name: launcher
-  buildsystem: simple
-  build-commands:
-  - install -Dm 744 doomseeker.sh /app/bin/doomseeker.sh
-  - install -Dm 644 gzdoom.sf2 /app/share/sounds/sf2/gzdoom.sf2
-  - install -Dm 644 com.zandronum.Zandronum.desktop -t /app/share/applications
-  - install -Dm 644 com.zandronum.Zandronum.appdata.xml -t /app/share/metainfo
-  - install -Dm 644 com.zandronum.Zandronum.48.png /app/share/icons/hicolor/48x48/apps/com.zandronum.Zandronum.png
-  - install -Dm 644 com.zandronum.Zandronum.64.png /app/share/icons/hicolor/64x64/apps/com.zandronum.Zandronum.png
-  - install -Dm 644 com.zandronum.Zandronum.128.png /app/share/icons/hicolor/128x128/apps/com.zandronum.Zandronum.png
-  sources:
-  - type: file
-    path: com.zandronum.Zandronum.desktop
-  - type: file
-    path: com.zandronum.Zandronum.appdata.xml
-  - type: file
-    path: com.zandronum.Zandronum.48.png
-  - type: file
-    path: com.zandronum.Zandronum.64.png
-  - type: file
-    path: com.zandronum.Zandronum.128.png
-  - type: file
-    url: https://github.com/coelckers/gzdoom/raw/g4.7.1/soundfont/gzdoom.sf2
-    sha256: fca3e514b635a21789d4224e84865d2954a2a914d46b64aa8219ddb565c44869
-  - type: script
-    dest-filename: doomseeker.sh
-    commands:
-      # Neccessery evil to ensure that Zandronum doesn't crash because of the outdated
-      # FMOD library: https://zandronum.com/forum/viewtopic.php?t=9885
-      - sed -i 's|\(snd_output=\)\(.*\)|\1SDL|g' ~/.config/zandronum/zandronum.ini
-      - sed -i 's|\(snd_mididevice=\)\(.*\)|\1-3|g' ~/.config/zandronum/zandronum.ini
-      - /app/bin/doomseeker
+  - name: launcher
+    buildsystem: simple
+    build-commands:
+      - install -Dm 744 doomseeker.sh /app/bin/doomseeker.sh
+      - install -Dm 644 gzdoom.sf2 /app/share/sounds/sf2/gzdoom.sf2
+      - install -Dm 644 com.zandronum.Zandronum.desktop -t /app/share/applications
+      - install -Dm 644 com.zandronum.Zandronum.appdata.xml -t /app/share/metainfo
+      - install -Dm 644 com.zandronum.Zandronum.48.png /app/share/icons/hicolor/48x48/apps/com.zandronum.Zandronum.png
+      - install -Dm 644 com.zandronum.Zandronum.64.png /app/share/icons/hicolor/64x64/apps/com.zandronum.Zandronum.png
+      - install -Dm 644 com.zandronum.Zandronum.128.png /app/share/icons/hicolor/128x128/apps/com.zandronum.Zandronum.png
+    sources:
+      - type: file
+        path: com.zandronum.Zandronum.desktop
+      - type: file
+        path: com.zandronum.Zandronum.appdata.xml
+      - type: file
+        path: com.zandronum.Zandronum.48.png
+      - type: file
+        path: com.zandronum.Zandronum.64.png
+      - type: file
+        path: com.zandronum.Zandronum.128.png
+      - type: file
+        url: https://github.com/coelckers/gzdoom/raw/g4.7.1/soundfont/gzdoom.sf2
+        sha256: fca3e514b635a21789d4224e84865d2954a2a914d46b64aa8219ddb565c44869
+      - type: script
+        dest-filename: doomseeker.sh
+        commands:
+          # Neccessery evil to ensure that Zandronum doesn't crash because of the outdated
+          # FMOD library: https://zandronum.com/forum/viewtopic.php?t=9885
+          - sed -i 's|\(snd_output=\)\(.*\)|\1SDL|g' ~/.config/zandronum/zandronum.ini
+          - sed -i 's|\(snd_mididevice=\)\(.*\)|\1-3|g' ~/.config/zandronum/zandronum.ini
+          - /app/bin/doomseeker
+

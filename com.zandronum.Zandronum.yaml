@@ -1,7 +1,7 @@
 app-id: com.zandronum.Zandronum
 runtime: org.kde.Platform
 sdk: org.kde.Sdk
-runtime-version: "5.15"
+runtime-version: "5.15-21.08"
 command: doomseeker.sh
 
 finish-args:
@@ -63,7 +63,7 @@ modules:
   - install -D skulltag_actors.pk3 /app/share/games/skulltag_actors.pk3
   - install -D zandronum.pk3 /app/share/games/doom/zandronum.pk3
   - install -D liboutput_sdl.so /app/lib/liboutput_sdl.so
-  - install -D /run/build/zandronum/fmodapi42416linux64/api/lib/libfmodex64-4.24.16.so /app/lib/libfmodex64-4.24.16.so  
+  - install -D /run/build/zandronum/fmodapi42416linux64/api/lib/libfmodex64-4.24.16.so /app/lib/libfmodex64-4.24.16.so
   config-opts:
   - -DOpenGL_GL_PREFERENCE=GLVND
   - -DCMAKE_BUILD_TYPE=RelWithDebInfo
@@ -145,7 +145,6 @@ modules:
   - type: shell
     commands:
       - sed -i 's/add_subdirectory( sqlite )//g' ./CMakeLists.txt
-
 
 - name: doomseeker
   buildsystem: cmake-ninja

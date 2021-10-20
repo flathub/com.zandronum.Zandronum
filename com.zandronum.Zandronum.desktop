@@ -1,7 +1,7 @@
 [Desktop Entry]
 Comment=Leading the way in newschool multiplayer Doom online
 Categories=Game;Shooter;
-Exec=doomseeker
+Exec=doomseeker.sh
 Icon=com.zandronum.Zandronum
 Name=Zandronum
 StartupNotify=true

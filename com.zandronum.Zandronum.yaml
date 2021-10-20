@@ -2,7 +2,7 @@ app-id: com.zandronum.Zandronum
 runtime: org.kde.Platform
 sdk: org.kde.Sdk
 runtime-version: "5.15"
-command: doomseeker
+command: doomseeker.sh
 
 finish-args:
 - --device=dri
@@ -49,7 +49,7 @@ modules:
 - name: zandronum
   buildsystem: cmake-ninja
   # Make install is not supported.
-  # Then again, everything is statically linked 
+  # Then again, everything is statically linked
   no-make-install: true
   build-commands:
   - install -D zandronum /app/bin/zandronum
@@ -153,8 +153,8 @@ modules:
   - -DCMAKE_INSTALL_PREFIX=/app
   sources:
   - type: archive
-    url: https://bitbucket.org/Doomseeker/doomseeker/get/1.3.1.tar.bz2
-    sha256: b55a96559dbd32c343e65634ac2b9de6e0128928e1eaeac3bb3dd19c88b8f2df
+    url: https://bitbucket.org/Doomseeker/doomseeker/get/1.3.2.tar.bz2
+    sha256: 2013ade29be63988023d8c04acb018979fd2aab454228b5a726482dd495027b6
   - type: shell
     commands:
     # Current upstream system makes use of Mercurial. There are plans
@@ -164,12 +164,21 @@ modules:
     - sed -i 's/HG_TIME/"'$(date --iso-8601=seconds)'"/g' ./src/core/version.cpp
     # Skip irrelevant plugins
     - sed -i 's/add_opt_subdirectory(chocolate-doom)//g' ./src/plugins/CMakeLists.txt
+    - sed -i 's/add_opt_subdirectory(zandronumq)//g' ./src/plugins/CMakeLists.txt
     - sed -i 's/add_opt_subdirectory(odamex)//g' ./src/plugins/CMakeLists.txt
     - sed -i 's/add_opt_subdirectory(srb2)//g' ./src/plugins/CMakeLists.txt
     - sed -i 's/add_opt_subdirectory(turok2ex)//g' ./src/plugins/CMakeLists.txt
 
 - name: launcher
   buildsystem: simple
+  build-commands:
+  - install -Dm 744 doomseeker.sh /app/bin/doomseeker.sh
+  - install -Dm 644 gzdoom.sf2 /app/share/sounds/sf2/gzdoom.sf2
+  - install -Dm 644 com.zandronum.Zandronum.desktop -t /app/share/applications
+  - install -Dm 644 com.zandronum.Zandronum.appdata.xml -t /app/share/metainfo
+  - install -Dm 644 com.zandronum.Zandronum.48.png /app/share/icons/hicolor/48x48/apps/com.zandronum.Zandronum.png
+  - install -Dm 644 com.zandronum.Zandronum.64.png /app/share/icons/hicolor/64x64/apps/com.zandronum.Zandronum.png
+  - install -Dm 644 com.zandronum.Zandronum.128.png /app/share/icons/hicolor/128x128/apps/com.zandronum.Zandronum.png
   sources:
   - type: file
     path: com.zandronum.Zandronum.desktop
@@ -182,13 +191,13 @@ modules:
   - type: file
     path: com.zandronum.Zandronum.128.png
   - type: file
-    url: https://github.com/coelckers/gzdoom/raw/g4.5.0/soundfont/gzdoom.sf2
+    url: https://github.com/coelckers/gzdoom/raw/g4.7.1/soundfont/gzdoom.sf2
     sha256: fca3e514b635a21789d4224e84865d2954a2a914d46b64aa8219ddb565c44869
-  build-commands:
-  - install -Dm 644 gzdoom.sf2 /app/share/sounds/sf2/gzdoom.sf2
-  - install -Dm 644 com.zandronum.Zandronum.desktop -t /app/share/applications
-  - install -Dm 644 com.zandronum.Zandronum.appdata.xml -t /app/share/metainfo
-  - install -Dm 644 com.zandronum.Zandronum.48.png /app/share/icons/hicolor/48x48/apps/com.zandronum.Zandronum.png
-  - install -Dm 644 com.zandronum.Zandronum.64.png /app/share/icons/hicolor/64x64/apps/com.zandronum.Zandronum.png
-  - install -Dm 644 com.zandronum.Zandronum.128.png /app/share/icons/hicolor/128x128/apps/com.zandronum.Zandronum.png
-
+  - type: script
+    dest-filename: doomseeker.sh
+    commands:
+      # Neccessery evil to ensure that Zandronum doesn't crash because of the outdated
+      # FMOD library: https://zandronum.com/forum/viewtopic.php?t=9885
+      - sed -i 's|\(snd_output=\)\(.*\)|\1SDL|g' ~/.config/zandronum/zandronum.ini
+      - sed -i 's|\(snd_mididevice=\)\(.*\)|\1-3|g' ~/.config/zandronum/zandronum.ini
+      - /app/bin/doomseeker

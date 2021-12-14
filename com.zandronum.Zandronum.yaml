@@ -6,7 +6,6 @@ command: doomseeker.sh
 
 finish-args:
   - --device=dri
-  - --socket=wayland
   - --socket=x11
   - --share=ipc
   - --share=network

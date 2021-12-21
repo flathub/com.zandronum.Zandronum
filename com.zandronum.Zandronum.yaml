@@ -69,12 +69,12 @@ modules:
       - -DNO_GTK=ON
     sources:
       - type: archive
-        url: https://osdn.dl.osdn.net/scmarchive/g/zandronum/hg/zandronum-stable/10/af17/zandronum-stable-10af17.tar.gz
-        sha256: 869b175366faaf8519008db6734cd584e09e6f2710dcef18bba2ed61b993a489
+        url: https://hg.osdn.net/view/zandronum/zandronum-stable/archive/4178904d7698.tar.gz
+        sha256: 1c6a19f484b2397662660f908b8c88c60f5f61070a495ca2e70d81dc4a8dd673
       - type: archive
-        url: https://zandronum.com/essentials/fmod/fmodapi42416linux64.tar.gz
-        sha256: de545ab90c4f137a8e1734ed1891c7e28fa257d9cb7e6c953bedfd0fd9a77c42
-        dest: ./fmodapi42416linux64
+        url: https://zandronum.com/essentials/fmod/fmodapi44464linux.tar.gz
+        sha256: 21a24f1394ae6981a47be0281f69ce41201801e59fb88084c49c5fd5459af010
+        dest: ./fmodapi44464linux
         # Current upstream system makes use of Mercurial. To have the right version number in
         # the build, we add our own file containing version number info.
       - type: file
@@ -115,12 +115,12 @@ modules:
       - -DNO_GTK=ON
     sources:
       - type: archive
-        url: https://osdn.dl.osdn.net/scmarchive/g/zandronum/hg/zandronum-stable/10/af17/zandronum-stable-10af17.tar.gz
-        sha256: 869b175366faaf8519008db6734cd584e09e6f2710dcef18bba2ed61b993a489
+        url: https://hg.osdn.net/view/zandronum/zandronum-stable/archive/4178904d7698.tar.gz
+        sha256: 1c6a19f484b2397662660f908b8c88c60f5f61070a495ca2e70d81dc4a8dd673
       - type: archive
-        url: https://zandronum.com/essentials/fmod/fmodapi42416linux64.tar.gz
-        sha256: de545ab90c4f137a8e1734ed1891c7e28fa257d9cb7e6c953bedfd0fd9a77c42
-        dest: ./fmodapi42416linux64
+        url: https://zandronum.com/essentials/fmod/fmodapi44464linux.tar.gz
+        sha256: 21a24f1394ae6981a47be0281f69ce41201801e59fb88084c49c5fd5459af010
+        dest: ./fmodapi44464linux
         # Current upstream system makes use of Mercurial. To have the right version number in
         # the build, we add our own file containing version number info.
       - type: file

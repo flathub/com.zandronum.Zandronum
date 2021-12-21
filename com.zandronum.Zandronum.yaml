@@ -28,6 +28,9 @@ modules:
   - shared-modules/glu/glu-9.json
   - shared-modules/glew/glew.json
 
+  - shared-modules/linux-audio/libinstpatch.json
+  - shared-modules/linux-audio/fluidsynth2.json
+
   # Warning, must be in this order... SDL last
   - shared-modules/SDL/SDL-1.2.15.json
 

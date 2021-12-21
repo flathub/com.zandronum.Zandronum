@@ -51,7 +51,7 @@ modules:
       - install -D skulltag_actors.pk3 /app/share/games/skulltag_actors.pk3
       - install -D zandronum.pk3 /app/share/games/doom/zandronum.pk3
       - install -D liboutput_sdl.so /app/lib/liboutput_sdl.so
-      - install -D /run/build/zandronum/fmodapi42416linux64/api/lib/libfmodex64-4.24.16.so /app/lib/libfmodex64-4.24.16.so
+      - install -D /run/build/zandronum/fmodapi44464linux/api/lib/libfmodex64-4.44.64.so /app/lib/libfmodex64-4.44.64.so
     config-opts:
       - -DOpenGL_GL_PREFERENCE=GLVND
       - -DCMAKE_BUILD_TYPE=RelWithDebInfo
@@ -59,8 +59,8 @@ modules:
       - -DCMAKE_INSTALL_PREFIX=/app
       - -DCMAKE_LIBRARY_PATH=/app/lib
       - -DCMAKE_INCLUDE_PATH=/app/app
-      - -DFMOD_LIBRARY=./fmodapi42416linux64/api/lib/libfmodex64-4.24.16.so
-      - -DFMOD_INCLUDE_DIR=./fmodapi42416linux64/api/inc
+      - -DFMOD_LIBRARY=./fmodapi44464linux/api/lib/libfmodex64-4.44.64.so
+      - -DFMOD_INCLUDE_DIR=./fmodapi44464linux/api/inc
       # Bundled version of GME has compile-errors
       - -DFORCE_INTERNAL_GME=OFF
       - -DFORCE_INTERNAL_ZLIB=OFF
@@ -111,8 +111,8 @@ modules:
       - -DCMAKE_INSTALL_PREFIX=/app
       - -DCMAKE_LIBRARY_PATH=/app/lib
       - -DCMAKE_INCLUDE_PATH=/app/app
-      - -DFMOD_LIBRARY=./fmodapi42416linux64/api/lib/libfmodex64-4.24.16.so
-      - -DFMOD_INCLUDE_DIR=./fmodapi42416linux64/api/inc
+      - -DFMOD_LIBRARY=./fmodapi44464linux/api/lib/libfmodex64-4.44.64.so
+      - -DFMOD_INCLUDE_DIR=./fmodapi44464linux/api/inc
       # Bundled version of GME has compile-errors
       - -DFORCE_INTERNAL_GME=OFF
       - -DFORCE_INTERNAL_ZLIB=OFF

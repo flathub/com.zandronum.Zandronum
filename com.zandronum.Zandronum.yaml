@@ -29,7 +29,23 @@ modules:
   - shared-modules/glew/glew.json
 
   # Warning, must be in this order... SDL last
+  - shared-modules/gtk2/gtk2.json
   - shared-modules/SDL/SDL-1.2.15.json
+  
+  # Has a compile-error, look into this later
+  # https://github.com/flathub/org.musesequencer.Muse3/commit/cd2bc6623bf67534252594e46157a889c0ebb086#diff-8fee85c8d994e2ce2c849926c24d89708641dbaf0730040b9f5ab89e16faa0de
+  - name: fluidsynth1
+    buildsystem: cmake-ninja
+    disabled: true
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
+      - -DLIB_SUFFIX=
+      - -DCMAKE_EXE_LINKER_FLAGS=-lncurse
+      - -DCMAKE_SHARED_LINKER_FLAGS=-lncurses
+    sources:
+      - type: archive
+        url: https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v1.1.11.tar.gz
+        sha256: da8878ff374d12392eecf87e96bad8711b8e76a154c25a571dd8614d1af80de8
 
   - name: gme
     buildsystem: cmake-ninja
@@ -37,100 +53,6 @@ modules:
       - type: archive
         url: https://bitbucket.org/mpyne/game-music-emu/downloads/game-music-emu-0.6.3.tar.gz
         sha256: 626e8a104e0dadd10ef6519a67aca880c7b40f81471659f1935b61754e12fc7b
-
-  - name: zandronum
-    buildsystem: cmake-ninja
-    # Make install is not supported.
-    # Then again, everything is statically linked
-    no-make-install: true
-    build-commands:
-      - install -D zandronum /app/bin/zandronum
-      - install -D skulltag_actors.pk3 /app/share/games/skulltag_actors.pk3
-      - install -D zandronum.pk3 /app/share/games/doom/zandronum.pk3
-      - install -D liboutput_sdl.so /app/lib/liboutput_sdl.so
-      - install -D /run/build/zandronum/fmodapi42416linux64/api/lib/libfmodex64-4.24.16.so /app/lib/libfmodex64-4.24.16.so
-    config-opts:
-      - -DOpenGL_GL_PREFERENCE=GLVND
-      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
-      - -DRELEASE_WITH_DEBUG_FILE=ON
-      - -DCMAKE_INSTALL_PREFIX=/app
-      - -DCMAKE_LIBRARY_PATH=/app/lib
-      - -DCMAKE_INCLUDE_PATH=/app/app
-      - -DFMOD_LIBRARY=./fmodapi42416linux64/api/lib/libfmodex64-4.24.16.so
-      - -DFMOD_INCLUDE_DIR=./fmodapi42416linux64/api/inc
-      # Bundled version of GME has compile-errors
-      - -DFORCE_INTERNAL_GME=OFF
-      - -DFORCE_INTERNAL_ZLIB=OFF
-      - -DFORCE_INTERNAL_JPEG=OFF
-      - -DFORCE_INTERNAL_BZIP2=OFF
-      # We only compile the client
-      - -DSERVERONLY=OFF
-      # No UI included. Doomseeker does that part
-      - -DNO_GTK=ON
-    sources:
-      - type: archive
-        url: https://osdn.dl.osdn.net/scmarchive/g/zandronum/hg/zandronum-stable/10/af17/zandronum-stable-10af17.tar.gz
-        sha256: 869b175366faaf8519008db6734cd584e09e6f2710dcef18bba2ed61b993a489
-      - type: archive
-        url: https://zandronum.com/essentials/fmod/fmodapi42416linux64.tar.gz
-        sha256: de545ab90c4f137a8e1734ed1891c7e28fa257d9cb7e6c953bedfd0fd9a77c42
-        dest: ./fmodapi42416linux64
-        # Current upstream system makes use of Mercurial. To have the right version number in
-        # the build, we add our own file containing version number info.
-      - type: file
-        path: gitinfo.h.patch
-        dest: ./src
-        dest-filename: gitinfo.h
-        # Don't use the bundled sqlite
-      - type: shell
-        commands:
-          - sed -i 's/add_subdirectory( sqlite )//g' ./CMakeLists.txt
-
-  # For troubling historic reasons, the server and client were long developed as
-  # separate entities. As such, their build system is not fully alligned yet.
-  # A future version of this script should consider adding this as an optional component.
-  # Upstream has also hardcoded GeoIP.dat which gives a warning when starting a server
-  - name: zandronum-server
-    buildsystem: cmake-ninja
-    no-make-install: true
-    build-commands:
-      - install -D zandronum-server /app/bin/zandronum-server
-    config-opts:
-      - -DOpenGL_GL_PREFERENCE=GLVND
-      - -DCMAKE_BUILD_TYPE=RelWithDebInfo
-      - -DRELEASE_WITH_DEBUG_FILE=ON
-      - -DCMAKE_INSTALL_PREFIX=/app
-      - -DCMAKE_LIBRARY_PATH=/app/lib
-      - -DCMAKE_INCLUDE_PATH=/app/app
-      - -DFMOD_LIBRARY=./fmodapi42416linux64/api/lib/libfmodex64-4.24.16.so
-      - -DFMOD_INCLUDE_DIR=./fmodapi42416linux64/api/inc
-      # Bundled version of GME has compile-errors
-      - -DFORCE_INTERNAL_GME=OFF
-      - -DFORCE_INTERNAL_ZLIB=OFF
-      - -DFORCE_INTERNAL_JPEG=OFF
-      - -DFORCE_INTERNAL_BZIP2=OFF
-      # We only compile the server
-      - -DSERVERONLY=ON
-      # No UI included. Doomseeker does that part
-      - -DNO_GTK=ON
-    sources:
-      - type: archive
-        url: https://osdn.dl.osdn.net/scmarchive/g/zandronum/hg/zandronum-stable/10/af17/zandronum-stable-10af17.tar.gz
-        sha256: 869b175366faaf8519008db6734cd584e09e6f2710dcef18bba2ed61b993a489
-      - type: archive
-        url: https://zandronum.com/essentials/fmod/fmodapi42416linux64.tar.gz
-        sha256: de545ab90c4f137a8e1734ed1891c7e28fa257d9cb7e6c953bedfd0fd9a77c42
-        dest: ./fmodapi42416linux64
-        # Current upstream system makes use of Mercurial. To have the right version number in
-        # the build, we add our own file containing version number info.
-      - type: file
-        path: gitinfo.h.patch
-        dest: ./src
-        dest-filename: gitinfo.h
-        # Don't use the bundled sqlite
-      - type: shell
-        commands:
-          - sed -i 's/add_subdirectory( sqlite )//g' ./CMakeLists.txt
 
   - name: doomseeker
     buildsystem: cmake-ninja
@@ -155,6 +77,34 @@ modules:
           - sed -i 's/add_opt_subdirectory(odamex)//g' ./src/plugins/CMakeLists.txt
           - sed -i 's/add_opt_subdirectory(srb2)//g' ./src/plugins/CMakeLists.txt
           - sed -i 's/add_opt_subdirectory(turok2ex)//g' ./src/plugins/CMakeLists.txt
+
+  - name: bzip2
+    buildsystem: simple
+    build-commands:
+       - make -f Makefile-libbz2_so
+       - install -D libbz2.so.1.0.8 /app/lib/libbz2.so.1.0.8
+       - ln -s /app/lib/libbz2.so.1.0.8 /app/lib/libbz2.so.1.0
+    sources:
+      - type: archive
+        url: https://www.sourceware.org/pub/bzip2/bzip2-latest.tar.gz
+        sha256: ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269
+
+  # Zandronum is such a work of art, that it's better for all of us to just
+  # take the upstream package and call it a day.
+  - name: zandronum
+    buildsystem: simple
+    build-commands:
+      - tar -xf zandronum3.1-linux-x86_64.tar.bz2
+      - install -D zandronum /app/bin/zandronum
+      - install -D zandronum-server /app/bin/zandronum-server
+      - install -D brightmaps.pk3 /app/share/games/brightmaps.pk3
+      - install -D skulltag_actors.pk3 /app/share/games/skulltag_actors.pk3
+      - install -D zandronum.pk3 /app/share/games/doom/zandronum.pk3
+      - install -D libfmodex64-4.44.64.so /app/lib/libfmodex64-4.44.64.so
+    sources:
+      - type: file
+        url: https://zandronum.com/downloads/zandronum3.1-linux-x86_64.tar.bz2
+        sha256: 3dee92d2ab9ad9d7c485b46cac28c381e46ff9fe060695a9ca5034dd425dc9c6
 
   - name: launcher
     buildsystem: simple

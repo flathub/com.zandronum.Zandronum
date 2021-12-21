@@ -85,6 +85,7 @@ modules:
       - type: shell
         commands:
           - sed -i 's/add_subdirectory( sqlite )//g' ./CMakeLists.txt
+          - sed -i '2i cmake_policy(SET CMP0026 OLD)' ./gdtoa/CMakeLists.txt
 
   # For troubling historic reasons, the server and client were long developed as
   # separate entities. As such, their build system is not fully alligned yet.
@@ -131,6 +132,7 @@ modules:
       - type: shell
         commands:
           - sed -i 's/add_subdirectory( sqlite )//g' ./CMakeLists.txt
+          - sed -i '2i cmake_policy(SET CMP0026 OLD)' ./gdtoa/CMakeLists.txt
 
   - name: doomseeker
     buildsystem: cmake-ninja

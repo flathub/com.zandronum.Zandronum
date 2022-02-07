@@ -61,9 +61,14 @@
   </screenshots>
 
   <releases>
+    <release version="3.1.0" date="2021-12-12">
+      <description>
+        <p>Zandronum 3.1 on Flathub.</p>
+      </description>
+    </release>
     <release version="3.0.0" date="2019-09-17">
       <description>
-        <p>First release of Zandronum on Flatpak.</p>
+        <p>First release of Zandronum on Flathub.</p>
       </description>
     </release>
   </releases>

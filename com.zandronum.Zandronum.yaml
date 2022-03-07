@@ -27,13 +27,15 @@ cleanup:
 modules:
   - shared-modules/glu/glu-9.json
   - shared-modules/glew/glew.json
-
-  # Warning, must be in this order... SDL last
   - shared-modules/gtk2/gtk2.json
-  - shared-modules/SDL/SDL-1.2.15.json
   
-  # Has a compile-error, look into this later
-  # https://github.com/flathub/org.musesequencer.Muse3/commit/cd2bc6623bf67534252594e46157a889c0ebb086#diff-8fee85c8d994e2ce2c849926c24d89708641dbaf0730040b9f5ab89e16faa0de
+  - name: sdl12-compat
+    buildsystem: cmake-ninja
+    sources:
+      - type: archive
+        url: https://github.com/libsdl-org/sdl12-compat/archive/refs/tags/release-1.2.52.tar.gz
+        sha256: 5bd7942703575554670a8767ae030f7921a0ac3c5e2fd173a537b7c7a8599014
+
   - name: fluidsynth1
     buildsystem: cmake-ninja
     disabled: true
@@ -53,6 +55,17 @@ modules:
       - type: archive
         url: https://bitbucket.org/mpyne/game-music-emu/downloads/game-music-emu-0.6.3.tar.gz
         sha256: 626e8a104e0dadd10ef6519a67aca880c7b40f81471659f1935b61754e12fc7b
+
+  - name: bzip2
+    buildsystem: simple
+    build-commands:
+       - make -f Makefile-libbz2_so
+       - install -D libbz2.so.1.0.8 /app/lib/libbz2.so.1.0.8
+       - ln -s /app/lib/libbz2.so.1.0.8 /app/lib/libbz2.so.1.0
+    sources:
+      - type: archive
+        url: https://www.sourceware.org/pub/bzip2/bzip2-latest.tar.gz
+        sha256: ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269
 
   - name: doomseeker
     buildsystem: cmake-ninja
@@ -77,17 +90,6 @@ modules:
           - sed -i 's/add_opt_subdirectory(odamex)//g' ./src/plugins/CMakeLists.txt
           - sed -i 's/add_opt_subdirectory(srb2)//g' ./src/plugins/CMakeLists.txt
           - sed -i 's/add_opt_subdirectory(turok2ex)//g' ./src/plugins/CMakeLists.txt
-
-  - name: bzip2
-    buildsystem: simple
-    build-commands:
-       - make -f Makefile-libbz2_so
-       - install -D libbz2.so.1.0.8 /app/lib/libbz2.so.1.0.8
-       - ln -s /app/lib/libbz2.so.1.0.8 /app/lib/libbz2.so.1.0
-    sources:
-      - type: archive
-        url: https://www.sourceware.org/pub/bzip2/bzip2-latest.tar.gz
-        sha256: ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269
 
   # Zandronum is such a work of art, that it's better for all of us to just
   # take the upstream package and call it a day.

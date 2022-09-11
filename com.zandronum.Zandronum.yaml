@@ -35,6 +35,10 @@ modules:
       - type: archive
         url: https://github.com/libsdl-org/sdl12-compat/archive/refs/tags/release-1.2.52.tar.gz
         sha256: 5bd7942703575554670a8767ae030f7921a0ac3c5e2fd173a537b7c7a8599014
+        x-checker-data:
+          type: anitya
+          project-id: 242769
+          url-template: https://github.com/libsdl-org/sdl12-compat/archive/refs/tags/release-$version.tar.gz
 
   - name: fluidsynth1
     buildsystem: cmake-ninja
@@ -55,6 +59,10 @@ modules:
       - type: archive
         url: https://bitbucket.org/mpyne/game-music-emu/downloads/game-music-emu-0.6.3.tar.gz
         sha256: 626e8a104e0dadd10ef6519a67aca880c7b40f81471659f1935b61754e12fc7b
+        x-checker-data:
+          type: anitya
+          project-id: 866
+          url-template: https://bitbucket.org/mpyne/game-music-emu/downloads/game-music-emu-$version.tar.gz
 
   - name: bzip2
     buildsystem: simple
@@ -64,8 +72,12 @@ modules:
        - ln -s /app/lib/libbz2.so.1.0.8 /app/lib/libbz2.so.1.0
     sources:
       - type: archive
-        url: https://www.sourceware.org/pub/bzip2/bzip2-latest.tar.gz
-        sha256: ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269
+        url: https://github.com/opencor/bzip2/archive/refs/tags/bzip2-1.0.8.tar.gz
+        sha256: db106b740252669664fd8f3a1c69fe7f689d5cd4b132f82ba82b9afba27627df
+        x-checker-data:
+          type: anitya
+          project-id: 237
+          url-template: https://github.com/opencor/bzip2/archive/refs/tags/bzip2-$version.tar.gz
 
   - name: doomseeker
     buildsystem: cmake-ninja
@@ -107,6 +119,11 @@ modules:
       - type: file
         url: https://zandronum.com/downloads/zandronum3.1-linux-x86_64.tar.bz2
         sha256: 3dee92d2ab9ad9d7c485b46cac28c381e46ff9fe060695a9ca5034dd425dc9c6
+        x-checker-data:
+          type: html
+          url: https://zandronum.com/download
+          version-pattern: <p>The latest version is <strong>([\d\.]+)</strong>, released on December 2021.</p>
+          url-template: https://zandronum.com/downloads/zandronum$version-linux-x86_64.tar.bz2
 
   - name: launcher
     buildsystem: simple
@@ -130,7 +147,7 @@ modules:
       - type: file
         path: com.zandronum.Zandronum.128.png
       - type: file
-        url: https://github.com/coelckers/gzdoom/raw/g4.7.1/soundfont/gzdoom.sf2
+        url: https://github.com/coelckers/gzdoom/raw/g4.8.2/soundfont/gzdoom.sf2
         sha256: fca3e514b635a21789d4224e84865d2954a2a914d46b64aa8219ddb565c44869
       - type: script
         dest-filename: doomseeker.sh

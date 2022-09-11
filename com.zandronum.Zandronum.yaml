@@ -147,7 +147,7 @@ modules:
       - type: file
         path: com.zandronum.Zandronum.128.png
       - type: file
-        url: https://github.com/coelckers/gzdoom/raw/g4.7.1/soundfont/gzdoom.sf2
+        url: https://github.com/coelckers/gzdoom/raw/g4.8.2/soundfont/gzdoom.sf2
         sha256: fca3e514b635a21789d4224e84865d2954a2a914d46b64aa8219ddb565c44869
       - type: script
         dest-filename: doomseeker.sh

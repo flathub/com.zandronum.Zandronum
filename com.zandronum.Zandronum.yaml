@@ -1,7 +1,7 @@
 app-id: com.zandronum.Zandronum
 runtime: org.kde.Platform
 sdk: org.kde.Sdk
-runtime-version: 5.15-21.08
+runtime-version: 5.15-22.08
 command: doomseeker.sh
 
 finish-args:
@@ -19,10 +19,10 @@ finish-args:
   - --persist=.config/doomseeker
 
 cleanup:
-  - /app/include
-  - /app/lib/*.a
-  - /app/lib/*.la
-  - /app/lib/pkgconfig
+  - /include
+  - /lib/*.a
+  - /lib/*.la
+  - /lib/pkgconfig
 
 modules:
   - shared-modules/glu/glu-9.json
@@ -39,6 +39,24 @@ modules:
           type: anitya
           project-id: 242769
           url-template: https://github.com/libsdl-org/sdl12-compat/archive/refs/tags/release-$version.tar.gz
+
+  - name: openssl11
+    buildsystem: simple
+    build-commands:
+      - ./config --prefix=/app
+      - make -j $FLATPAK_BUILDER_N_JOBS
+      - make install
+    cleanup:
+      - /share/doc
+      - /share/man
+    sources:
+      - type: archive
+        url: https://www.openssl.org/source/openssl-1.1.1q.tar.gz
+        sha256: d7939ce614029cdff0b6c20f0e2e5703158a489a72b2507b8bd51bf8c8fd10ca
+        x-checker-data:
+          type: anitya
+          project-id: 20333
+          url-template: https://www.openssl.org/source/openssl-$version.tar.gz
 
   - name: fluidsynth1
     buildsystem: cmake-ninja

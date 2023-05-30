@@ -33,8 +33,8 @@ modules:
     buildsystem: cmake-ninja
     sources:
       - type: archive
-        url: https://github.com/libsdl-org/sdl12-compat/archive/refs/tags/release-1.2.60.tar.gz
-        sha256: 029fa24fe9e0d6a15b94f4737a2d3ed3144c5ef920eb82b4c6b30248eb94518b
+        url: https://github.com/libsdl-org/sdl12-compat/archive/refs/tags/release-1.2.64.tar.gz
+        sha256: 3e308e817c7f0c6383225485e9a67bf1119ad684b8cc519038671cc1b5d29861
         x-checker-data:
           type: anitya
           project-id: 242769
@@ -51,8 +51,8 @@ modules:
       - /share/man
     sources:
       - type: archive
-        url: https://www.openssl.org/source/openssl-1.1.1t.tar.gz
-        sha256: 8dee9b24bdb1dcbf0c3d1e9b02fb8f6bf22165e807f45adeb7c9677536859d3b
+        url: https://www.openssl.org/source/openssl-1.1.1u.tar.gz
+        sha256: e2f8d84b523eecd06c7be7626830370300fbcc15386bf5142d72758f6963ebc6
         x-checker-data:
           type: anitya
           project-id: 20333

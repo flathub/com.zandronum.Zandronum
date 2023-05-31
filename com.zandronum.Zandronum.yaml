@@ -5,8 +5,9 @@ runtime-version: 5.15-22.08
 command: doomseeker.sh
 
 finish-args:
+  - --socket=wayland
+  - --socket=fallback-x11
   - --device=dri
-  - --socket=x11
   - --share=ipc
   - --share=network
   - --socket=pulseaudio

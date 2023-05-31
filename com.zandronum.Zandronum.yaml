@@ -25,20 +25,12 @@ cleanup:
   - /lib/pkgconfig
 
 modules:
-  - shared-modules/glu/glu-9.json
+  - shared-modules/glu/glu-9.json  
   - shared-modules/glew/glew.json
   - shared-modules/gtk2/gtk2.json
-
-  - name: sdl12-compat
-    buildsystem: cmake-ninja
-    sources:
-      - type: archive
-        url: https://github.com/libsdl-org/sdl12-compat/archive/refs/tags/release-1.2.64.tar.gz
-        sha256: 3e308e817c7f0c6383225485e9a67bf1119ad684b8cc519038671cc1b5d29861
-        x-checker-data:
-          type: anitya
-          project-id: 242769
-          url-template: https://github.com/libsdl-org/sdl12-compat/archive/refs/tags/release-$version.tar.gz
+  
+  - shared-modules/SDL2/SDL2-no-libdecor.json
+  - shared-modules/SDL/sdl12-compat.json
 
   - name: openssl11
     buildsystem: simple

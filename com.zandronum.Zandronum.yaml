@@ -26,12 +26,25 @@ cleanup:
   - /lib/pkgconfig
 
 modules:
-  - shared-modules/glu/glu-9.json  
+  - shared-modules/glu/glu-9.json
   - shared-modules/glew/glew.json
   - shared-modules/gtk2/gtk2.json
   
   - shared-modules/SDL2/SDL2-no-libdecor.json
   - shared-modules/SDL/sdl12-compat.json
+  
+  # with libjpeg.so.8
+  - name: libjpeg 
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_SKIP_RPATH:BOOL=YES
+      - -DENABLE_STATIC:BOOL=NO
+      - -DWITH_JPEG8:BOOL=YES
+      - -DCMAKE_INSTALL_LIBDIR=/app/lib
+    sources:
+      - type: archive
+        url: https://github.com/libjpeg-turbo/libjpeg-turbo/archive/refs/tags/2.1.3.tar.gz
+        sha256: dbda0c685942aa3ea908496592491e5ec8160d2cf1ec9d5fd5470e50768e7859
 
   - name: openssl11
     buildsystem: simple
@@ -98,8 +111,8 @@ modules:
       - -DCMAKE_INSTALL_PREFIX=/app
     sources:
       - type: archive
-        url: https://bitbucket.org/Doomseeker/doomseeker/get/1.3.3.tar.bz2
-        sha256: 12b406ee6e0d1f8a6710b56c79d9b6b84c96404dad2bbcb4824dab2aab440517
+        url: https://bitbucket.org/Doomseeker/doomseeker/get/1.4.1.tar.bz2
+        sha256: 3983434ebea6aa5dab69d031dddd00caa062407c4e7f688ead47094fcde47dc5
       - type: shell
         commands:
           # Package requires HG_ details for version numbers

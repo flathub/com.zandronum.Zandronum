@@ -29,12 +29,12 @@ modules:
   - shared-modules/glu/glu-9.json
   - shared-modules/glew/glew.json
   - shared-modules/gtk2/gtk2.json
-  
+
   - shared-modules/SDL2/SDL2-no-libdecor.json
   - shared-modules/SDL/sdl12-compat.json
-  
+
   # with libjpeg.so.8
-  - name: libjpeg 
+  - name: libjpeg
     buildsystem: cmake-ninja
     config-opts:
       - -DCMAKE_SKIP_RPATH:BOOL=YES
@@ -57,8 +57,8 @@ modules:
       - /share/man
     sources:
       - type: archive
-        url: https://www.openssl.org/source/openssl-1.1.1u.tar.gz
-        sha256: e2f8d84b523eecd06c7be7626830370300fbcc15386bf5142d72758f6963ebc6
+        url: https://www.openssl.org/source/openssl-1.1.1v.tar.gz
+        sha256: d6697e2871e77238460402e9362d47d18382b15ef9f246aba6c7bd780d38a6b0
         x-checker-data:
           type: anitya
           project-id: 20333

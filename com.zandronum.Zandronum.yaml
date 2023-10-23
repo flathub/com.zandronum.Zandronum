@@ -30,7 +30,6 @@ modules:
   - shared-modules/glew/glew.json
   - shared-modules/gtk2/gtk2.json
 
-  - shared-modules/SDL2/SDL2-no-libdecor.json
   - shared-modules/SDL/sdl12-compat.json
 
   # with libjpeg.so.8

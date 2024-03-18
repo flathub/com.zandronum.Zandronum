@@ -65,7 +65,6 @@ modules:
 
   - name: fluidsynth1
     buildsystem: cmake-ninja
-    disabled: true
     config-opts:
       - -DCMAKE_BUILD_TYPE=RelWithDebInfo
       - -DLIB_SUFFIX=

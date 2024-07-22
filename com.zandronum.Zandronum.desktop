@@ -9,3 +9,8 @@ PrefersNonDefaultGPU=true
 Terminal=false
 Type=Application
 Keywords=Doom;Heretic;Hexen;strife;pwad;iwad;first;person;shooter;multiplayer;
+Actions=zink
+
+[Desktop Action zink]
+Name=Vulkan (Mesa 3D Zink)
+Exec=env MESA_LOADER_DRIVER_OVERRIDE=zink doomseeker.sh

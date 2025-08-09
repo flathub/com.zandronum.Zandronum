@@ -61,6 +61,16 @@
   </screenshots>
 
   <releases>
+    <release version="3.2.1" date="2025-07-10">
+      <description>
+        <p>Zandronum 3.2.1 on Flathub.</p>
+      </description>
+    </release>
+    <release version="3.2.0" date="2025-07-10">
+      <description>
+        <p>Zandronum 3.2 on Flathub.</p>
+      </description>
+    </release>
     <release version="3.1.0" date="2021-12-12">
       <description>
         <p>Zandronum 3.1 on Flathub.</p>

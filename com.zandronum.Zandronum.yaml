@@ -145,7 +145,7 @@ modules:
         x-checker-data:
           type: html
           url: https://zandronum.com/download
-          version-pattern: <p>The latest version is <strong>([\d\.]+)</strong>, released on August 5 2025.</p>
+          version-pattern: <p>The latest version is <strong>([\d\.]+)</strong>, released on</p>
           url-template: https://zandronum.com/downloads/zandronum$version-linux-x86_64.tar.bz2
 
   - name: launcher

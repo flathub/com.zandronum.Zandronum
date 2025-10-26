@@ -1,8 +1,8 @@
 app-id: com.zandronum.Zandronum
 runtime: org.kde.Platform
 sdk: org.kde.Sdk
-runtime-version: 5.15-24.08
-command: doomseeker.sh
+runtime-version: 5.15-25.08
+command: doomseeker
 
 finish-args:
   - --socket=wayland
@@ -28,11 +28,10 @@ cleanup:
 modules:
   - shared-modules/glu/glu-9.json
   - shared-modules/glew/glew.json
-  - shared-modules/gtk2/gtk2.json
-
+  - shared-modules/gtk2/gtk2.json  
+  - shared-modules/gzdoom/game-music-emu.json
   - shared-modules/SDL/sdl12-compat.json
 
-  # with libjpeg.so.8
   - name: libjpeg
     buildsystem: cmake-ninja
     config-opts:
@@ -42,8 +41,12 @@ modules:
       - -DCMAKE_INSTALL_LIBDIR=/app/lib
     sources:
       - type: archive
-        url: https://github.com/libjpeg-turbo/libjpeg-turbo/archive/refs/tags/2.1.3.tar.gz
-        sha256: dbda0c685942aa3ea908496592491e5ec8160d2cf1ec9d5fd5470e50768e7859
+        url: https://github.com/libjpeg-turbo/libjpeg-turbo/archive/refs/tags/3.1.2.tar.gz
+        sha256: 560f6338b547544c4f9721b18d8b87685d433ec78b3c644c70d77adad22c55e6
+        x-checker-data:
+          type: anitya
+          project-id: 1648
+          url-template: https://github.com/libjpeg-turbo/libjpeg-turbo/archive/refs/tags/$version.tar.gz
 
   - name: openssl11
     buildsystem: simple
@@ -67,6 +70,7 @@ modules:
     buildsystem: cmake-ninja
     config-opts:
       - -DCMAKE_BUILD_TYPE=RelWithDebInfo
+      - -DCMAKE_POLICY_VERSION_MINIMUM=3.5
       - -DLIB_SUFFIX=
       - -DCMAKE_EXE_LINKER_FLAGS=-lncurses
       - -DCMAKE_SHARED_LINKER_FLAGS=-lncurses
@@ -75,17 +79,6 @@ modules:
       - type: archive
         url: https://github.com/FluidSynth/fluidsynth/archive/refs/tags/v1.1.11.tar.gz
         sha256: da8878ff374d12392eecf87e96bad8711b8e76a154c25a571dd8614d1af80de8
-
-  - name: gme
-    buildsystem: cmake-ninja
-    sources:
-      - type: archive
-        url: https://bitbucket.org/mpyne/game-music-emu/downloads/game-music-emu-0.6.3.tar.gz
-        sha256: 626e8a104e0dadd10ef6519a67aca880c7b40f81471659f1935b61754e12fc7b
-        x-checker-data:
-          type: anitya
-          project-id: 866
-          url-template: https://bitbucket.org/mpyne/game-music-emu/downloads/game-music-emu-$version.tar.gz
 
   - name: bzip2
     buildsystem: simple
@@ -110,8 +103,8 @@ modules:
       - -DCMAKE_INSTALL_PREFIX=/app
     sources:
       - type: archive
-        url: https://bitbucket.org/Doomseeker/doomseeker/get/1.4.1.tar.bz2
-        sha256: 3983434ebea6aa5dab69d031dddd00caa062407c4e7f688ead47094fcde47dc5
+        url: https://bitbucket.org/Doomseeker/doomseeker/get/1.5.1.tar.bz2
+        sha256: eb9c0e2cd4dc1218b6712e451e76ddde963156e9cf79dd23bbd059ce3d807d81
       - type: shell
         commands:
           # Package requires HG_ details for version numbers
@@ -151,7 +144,6 @@ modules:
   - name: launcher
     buildsystem: simple
     build-commands:
-      - install -Dm 744 doomseeker.sh /app/bin/doomseeker.sh
       - install -Dm 644 gzdoom.sf2 /app/share/sounds/sf2/gzdoom.sf2
       - install -Dm 644 com.zandronum.Zandronum.desktop -t /app/share/applications
       - install -Dm 644 com.zandronum.Zandronum.appdata.xml -t /app/share/metainfo
@@ -172,14 +164,4 @@ modules:
       - type: file
         url: https://github.com/coelckers/gzdoom/raw/g4.8.2/soundfont/gzdoom.sf2
         sha256: fca3e514b635a21789d4224e84865d2954a2a914d46b64aa8219ddb565c44869
-      - type: script
-        dest-filename: doomseeker.sh
-        commands:
-          # Insert clean zandronum config if none defined
-          - ls ~/.config/zandronum/zandronum.ini || /app/bin/zandronum -nosound -norun
-          # Neccessery evil to ensure that Zandronum doesn't crash because of the outdated
-          # FMOD library: https://zandronum.com/forum/viewtopic.php?t=9885
-          - sed -i 's|\(snd_output=\)\(.*\)|\1SDL|g' ~/.config/zandronum/zandronum.ini
-          - sed -i 's|\(snd_mididevice=\)\(.*\)|\1-3|g' ~/.config/zandronum/zandronum.ini
-          - /app/bin/doomseeker
 

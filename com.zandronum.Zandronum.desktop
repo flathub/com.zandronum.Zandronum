@@ -1,7 +1,7 @@
 [Desktop Entry]
 Comment=Leading the way in newschool multiplayer Doom online
 Categories=Game;Shooter;
-Exec=doomseeker
+Exec=doomseeker.sh
 Icon=com.zandronum.Zandronum
 Name=Zandronum
 StartupNotify=true
@@ -12,4 +12,4 @@ Actions=zink
 
 [Desktop Action zink]
 Name=Vulkan (Mesa 3D Zink)
-Exec=env MESA_LOADER_DRIVER_OVERRIDE=zink doomseeker
+Exec=env MESA_LOADER_DRIVER_OVERRIDE=zink doomseeker.sh

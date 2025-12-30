@@ -24,12 +24,12 @@ With Doomseeker, you can create a custom game. Then, under mode you can sellect 
 Just as with the standalone Zandronum, you can pass commands through using the command line. If you want to play custom wads, you can add them to a sub-directory of `/zandronum/` and then you can directly access then from the terminal:
 
 ```
-flatpak run --command="zandronum -file ~/.var/app/com.zandronum.Zandronum/.config/zandronum/pwads/PL2.WAD" com.zandronum.Zandronum
+flatpak run --command="zandronum" com.zandronum.Zandronum -file ~/.var/app/com.zandronum.Zandronum/.config/zandronum/pwads/PL2.WAD"
 ```
 
 ```
 cd ~/.var/app/com.zandronum.Zandronum/.config/zandronum/pwads/
-flatpak run com.zandronum.Zandronum -file ./PL2.WAD
+flatpak run --command="zandronum" com.zandronum.Zandronum -file ./PL2.WAD
 ```
 
 For more info, see:

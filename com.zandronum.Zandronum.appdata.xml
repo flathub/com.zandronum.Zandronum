@@ -15,6 +15,7 @@
   <url type="bugtracker">https://zandronum.com/tracker/my_view_page.php</url>
   <url type="help">https://wiki.zandronum.com/Main_Page</url>
   <url type="contact">https://zandronum.com/forum/</url>
+  <url type="vcs-browser">https://github.com/DoomseekerTeam/Doomseeker/</url>
 
   <launchable type="desktop-id">com.zandronum.Zandronum.desktop</launchable>
 

@@ -103,8 +103,8 @@ modules:
       - -DCMAKE_INSTALL_PREFIX=/app
     sources:
       - type: archive
-        url: https://bitbucket.org/Doomseeker/doomseeker/get/1.5.1.tar.bz2
-        sha256: eb9c0e2cd4dc1218b6712e451e76ddde963156e9cf79dd23bbd059ce3d807d81
+        url: https://github.com/DoomseekerTeam/Doomseeker/archive/refs/tags/1.5.3.tar.gz
+        sha256: b22c170087b242e82ded086797e1746ce28e28dbec0d9ea207a6713b187b060e
       - type: shell
         commands:
           # Package requires HG_ details for version numbers

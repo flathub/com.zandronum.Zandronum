@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2019 Kevin Degeling -->
-
-<component type="desktop">
+<component type="desktop-application">
   <id>com.zandronum.Zandronum</id>
   <name>Zandronum</name>
   <summary>Leading the way in newschool multiplayer Doom online</summary>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>LicenseRef-proprietary</project_license>
-
-  <developer_name>Zandronum &amp; Doomseeker team</developer_name>
+  <developer id="com.zandronum">
+    <name>Zandronum &amp; Doomseeker team</name>
+  </developer>
   <update_contact>gnome@kevindegeling.nl</update_contact>
-
-  <url type="homepage">https://zandronum.com/</url>
+  <url type="homepage">https://zandronum.com</url>
   <url type="bugtracker">https://zandronum.com/tracker/my_view_page.php</url>
   <url type="help">https://wiki.zandronum.com/Main_Page</url>
   <url type="contact">https://zandronum.com/forum/</url>
   <url type="vcs-browser">https://foss.heptapod.net/zandronum</url>
-
   <launchable type="desktop-id">com.zandronum.Zandronum.desktop</launchable>
-
   <description>
     <p>
-      Zandronum is a multiplayer oriented port, based off Skulltag, for Doom and Doom II by id Software. Zandronum brings classic Doom into the 21st century, maintaining the essence of what has made Doom great for so many years and, at the same time, adding new features to modernize it, creating a fresh, fun new experience. Here's why you should kill your time with Zandronum, versus vanilla Doom:
+      Zandronum is a multiplayer oriented port, based off Skulltag, for Doom and Doom II
+      by id Software. Zandronum brings classic Doom into the 21st century, maintaining
+      the essence of what has made Doom great for so many years and, at the same time,
+      adding new features to modernize it, creating a fresh, fun new experience.
+      Here's why you should kill your time with Zandronum, versus vanilla Doom:
     </p>
     <ul>
       <li>Client/server architecture: play and switch between games with ease</li>
@@ -38,10 +39,11 @@
       <li>Supports modern versions of Windows, Mac OS X, and Linux</li>
     </ul>
     <p>
-      In some scenarios, commercial data files are required to run the supported games. In other cases, it's possibly to automatically use Freedoom as a drop-in replacement. This package comes bundled with Doomseeker for easy installation and server browsing.
+      In some scenarios, commercial data files are required to run the supported games.
+      In other cases, it's possibly to automatically use Freedoom as a drop-in replacement.
+      This package comes bundled with Doomseeker for easy installation and server browsing.
     </p>
   </description>
-
   <screenshots>
     <screenshot type="default">
       <image>https://raw.githubusercontent.com/flathub/com.zandronum.Zandronum/master/images/image_01.png</image>
@@ -60,7 +62,6 @@
       <caption>Doomseeker browser</caption>
     </screenshot>
   </screenshots>
-
   <releases>
     <release version="3.2.1" date="2025-07-10">
       <description>
@@ -83,7 +84,6 @@
       </description>
     </release>
   </releases>
-
   <content_rating type="oars-1.1">
     <!--
 	  Violence is tricky: You could argue that by 2019 standards, it's cartoonish.

@@ -1,3 +1,4 @@
 {
+    "require-important-update": true,
     "only-arches": ["x86_64"]
 }

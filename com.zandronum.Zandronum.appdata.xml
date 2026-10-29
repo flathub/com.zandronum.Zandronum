@@ -5,7 +5,7 @@
   <name>Zandronum</name>
   <summary>Leading the way in newschool multiplayer Doom online</summary>
   <metadata_license>CC0-1.0</metadata_license>
-  <project_license>LicenseRef-proprietary</project_license>
+  <project_license>LicenseRef-proprietary=https://foss.heptapod.net/zandronum/zandronum-stable#license</project_license>
   <developer id="com.zandronum">
     <name>Zandronum &amp; Doomseeker team</name>
   </developer>

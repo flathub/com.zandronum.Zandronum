@@ -149,7 +149,7 @@ modules:
           type: html
           is-main-source: true
           url: https://zandronum.com/download
-          version-pattern: The latest version is <strong>([\d\.]+)</strong>
+          version-pattern: 'href="/downloads/zandronum([\d.]+)-linux-x86_64\.tar\.bz2"'
           url-template: https://zandronum.com/downloads/zandronum$version-linux-x86_64.tar.bz2
 
   # Unfunctional for the time being. Worth trying again later
